@@ -12,6 +12,7 @@ namespace Budget_Manager
         private double totalSavings;
         private double totalAll;
 
+        private DollarFormat df;
         public ExpenseManager()
         {
             expenses = new List<Expense>();
@@ -19,6 +20,8 @@ namespace Budget_Manager
             totalTax = 0.0;
             totalSavings = 0.0;
             totalAll = 0.0;
+
+            df = new DollarFormat();
         }
         
         // Getters
@@ -101,6 +104,15 @@ namespace Budget_Manager
 
                 totalAll += (expenses[i].getBasePrice() + expenses[i].getTaxPrice());
             }
+        }
+
+        public string listDisplay(int index)
+        {
+            string data = "";
+
+            data = (expenses[index].getName() + "   " + df.format(expenses[index].getBasePrice()) + "   T: " + df.format(expenses[index].getTaxPrice()) + "   Total: " + df.format(expenses[index].getTotalPrice()));
+
+            return data;
         }
     }
 }

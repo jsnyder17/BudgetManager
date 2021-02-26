@@ -37,6 +37,8 @@ namespace Budget_Manager
             basePrice = Double.Parse(parts[1]);
             tax = Double.Parse(parts[2]);
             importance = int.Parse(parts[3]);
+
+            calcTaxPrice();
         }
         public Expense(Expense expense)
         {
@@ -67,6 +69,10 @@ namespace Budget_Manager
         {
             return taxPrice;
         }
+        public double getTotalPrice()
+        {
+            return basePrice + taxPrice;
+        }
 
         //Setters
         public void setName(string name)
@@ -95,16 +101,13 @@ namespace Budget_Manager
 
         public String display()
         {
-            return basePrice.ToString("C", CultureInfo.CurrentCulture); // Returns the base price in currency notation 
-        }
-        public String listDisplay()
-        {
-            return (name + " - $" + (basePrice + tax));
+            return String.Format("{0:0.00}", basePrice.ToString()); // Returns the base price in currency notation 
         }
 
         private void calcTaxPrice()
         {
-            taxPrice = basePrice * tax;
+            System.Diagnostics.Debug.WriteLine("Calculating " + basePrice.ToString() + " * " + (tax / 100).ToString());
+            taxPrice = basePrice * (tax / 100);
         }
     }
 }
