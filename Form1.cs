@@ -42,6 +42,7 @@ namespace Budget_Manager
             taxRb.Click += new EventHandler(rb_Click);
             savingsRb.Click += new EventHandler(rb_Click);
 
+            button2.Click += new EventHandler(buttonEdit_Click);
             button3.Click += new EventHandler(buttonRemove_Click);
             button4.Click += new EventHandler(buttonLoad_Click);
             button5.Click += new EventHandler(buttonSave_Click);
@@ -99,12 +100,32 @@ namespace Budget_Manager
                 windowOpen = true;
             }
         }
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex != -1)
+            {
+                if (!windowOpen)
+                {
+                    addExpense.setIndex(listBox1.SelectedIndex);
+                    addExpense.Visible = true;
+                    windowOpen = true;
+                }
+            }
+            else
+            {
+                MessageBox.Show("You must select an expense. ", "Error");
+            }
+        }
         private void buttonRemove_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex != -1)
             {
                 em.removeExpense(listBox1.SelectedIndex);
                 update();
+            }
+            else
+            {
+                MessageBox.Show("You must select an expense to delete. ", "Error");
             }
         }
         private void buttonLoad_Click(object sender, EventArgs e)

@@ -37,30 +37,14 @@ namespace Budget_Manager
             radioButtons[1] = medRb;
             radioButtons[2] = lowRb;
 
-            // Fill values if expense is being edited
-            if (index > -1)
-            {
-                nameTextBox.Text = em.getExpenses()[index].getName();
-                costTextBox.Text = em.getExpenses()[index].getBasePrice().ToString();
-                taxTextBox.Text = em.getExpenses()[index].getTax().ToString();
-
-                // Radio buttons
-                switch (em.getExpenses()[index].getImportance())
-                {
-                    case 1:
-                        lowRb.Checked = true;
-                        break;
-                    case 2:
-                        medRb.Checked = true;
-                        break;
-                    case 3:
-                        highRb.Checked = true;
-                        break;
-                }
-
-            }
-
             buttonAdd.Click += new EventHandler(buttonAdd_Click);
+        }
+
+        public void setIndex(int index)
+        {
+            this.index = index;
+
+            updateFields();
         }
 
         private void AddExpense_Load(object sender, EventArgs e)
@@ -89,10 +73,14 @@ namespace Budget_Manager
 
                 Expense expense = new Expense(nameTextBox.Text, Double.Parse(costTextBox.Text), Double.Parse(taxTextBox.Text), importanceInt);
 
+                // If editing expense
                 if (index != -1)
                 {
                     em.replaceExpense(expense, index);
+                    index = -1;
                 }
+
+                // If adding new expense 
                 else
                 {
                     em.addExpense(expense);
@@ -142,7 +130,7 @@ namespace Budget_Manager
 
             return badData;
         }
-        private void reset()
+        private void reset()    // Reset fields to blank values 
         {
             for (int i = 0; i < 3; i++)
             {
@@ -156,6 +144,25 @@ namespace Budget_Manager
                 }
             }
         }
+        private void updateFields()     // Update fields with selectd expense data (editing expense)
+        {
+            nameTextBox.Text = em.getExpenses()[index].getName();
+            costTextBox.Text = em.getExpenses()[index].getBasePrice().ToString();
+            taxTextBox.Text = em.getExpenses()[index].getTax().ToString();
 
+            // Radio buttons
+            switch (em.getExpenses()[index].getImportance())
+            {
+                case 1:
+                    lowRb.Checked = true;
+                    break;
+                case 2:
+                    medRb.Checked = true;
+                    break;
+                case 3:
+                    highRb.Checked = true;
+                    break;
+            }
+        }
     }
 }
