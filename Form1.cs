@@ -21,6 +21,8 @@ namespace Budget_Manager
 
         private OpenFileDialog openFileDialog;
         private SaveFileDialog saveFileDialog;
+
+        private DollarFormat df;
         public Form1(ExpenseManager em)
         {
             windowOpen = false;
@@ -28,7 +30,7 @@ namespace Budget_Manager
             
             this.em = em;
 
-            addExpense = new AddExpense(this, em, -1);
+            addExpense = new AddExpense(this, em);
             addExpense.Visible = false;
 
             openFileDialog = new OpenFileDialog();
@@ -36,11 +38,12 @@ namespace Budget_Manager
             saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
 
+            df = new DollarFormat();
+
             InitializeComponent();
 
             button1.Click += new EventHandler(buttonAdd_Click);
-            taxRb.Click += new EventHandler(rb_Click);
-            savingsRb.Click += new EventHandler(rb_Click);
+            savingsCb.Click += new EventHandler(cb_Click);
 
             button2.Click += new EventHandler(buttonEdit_Click);
             button3.Click += new EventHandler(buttonRemove_Click);
@@ -70,26 +73,22 @@ namespace Budget_Manager
             {
                 for (int i = 0; i < em.getExpenses().Count; i++)
                 {
-                    listBox1.Items.Add(em.getExpenses()[i].listDisplay());
+                    listBox1.Items.Add(em.listDisplay(i));
                 }
             }
 
             // Update tax and savings totals displays
-            label2.Text = ("Total Taxes: $" + (em.getTotalTax()));
-            label3.Text = ("Total Possible Savings: $" + (em.getTotalSavings()));
+            label2.Text = ("Total Taxes: " + df.format((em.getTotalTax())));
+            label3.Text = ("Total Possible Savings: " + df.format((em.getTotalSavings())));
 
             // Determine total to display
-            if (taxRb.Checked)
+            if (savingsCb.Checked)
             {
-                label4.Text = ("Total: $" + (em.getTotalPrice() + em.getTotalTax()));
-            }
-            else if (savingsRb.Checked)
-            {
-                label4.Text = ("Total: $" + (em.getTotalPrice() - em.getTotalSavings()));
+                label4.Text = ("Total: " + df.format((em.getTotalPrice() - em.getTotalSavings())));
             }
             else
             {
-                label4.Text = ("Total: $" + em.getTotalPrice());
+                label4.Text = ("Total: " + df.format(em.getTotalPrice() + em.getTotalTax()));
             }
         }
         private void buttonAdd_Click(object sender, EventArgs e)
@@ -106,7 +105,7 @@ namespace Budget_Manager
             {
                 if (!windowOpen)
                 {
-                    addExpense.setIndex(listBox1.SelectedIndex);
+                    addExpense.editExpense(listBox1.SelectedIndex);
                     addExpense.Visible = true;
                     windowOpen = true;
                 }
@@ -142,7 +141,7 @@ namespace Budget_Manager
                 save();
             }
         }
-        private void rb_Click(object sender, EventArgs e)
+        private void cb_Click(object sender, EventArgs e)
         {
             update();
         }
@@ -162,6 +161,8 @@ namespace Budget_Manager
                 File.WriteAllText(saveFileDialog.FileName, data);
 
                 System.Diagnostics.Debug.WriteLine("Saved file successfully! ");
+
+                MessageBox.Show("Budget saved successfully under '" + saveFileDialog.FileName + ".'", "Success");
             }
         }
         private void load()
@@ -189,6 +190,8 @@ namespace Budget_Manager
                 }
 
                 update();
+
+                MessageBox.Show("Load successful! ", "Success");
             }
         }
     }

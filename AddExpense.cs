@@ -15,11 +15,11 @@ namespace Budget_Manager
         private ExpenseManager em;
         private Form1 form1;
         private int index;
-        public AddExpense(Form1 form, ExpenseManager em, int index)
+        public AddExpense(Form1 form, ExpenseManager em)
         {
             form1 = form;
             this.em = em;
-            this.index = index;
+            this.index = -1;
 
             //Initialize arrays
             textBoxes = new TextBox[3];
@@ -38,9 +38,10 @@ namespace Budget_Manager
             radioButtons[2] = lowRb;
 
             buttonAdd.Click += new EventHandler(buttonAdd_Click);
+            buttonCancel.Click += new EventHandler(buttonCancel_Click);
         }
 
-        public void setIndex(int index)
+        public void editExpense(int index)
         {
             this.index = index;
 
@@ -92,6 +93,12 @@ namespace Budget_Manager
                 this.Visible = false;
                 reset();
             }
+        }
+        public void buttonCancel_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;
+            form1.setWindowOpen(false);
+            reset();
         }
         private bool checkBadData()
         {
