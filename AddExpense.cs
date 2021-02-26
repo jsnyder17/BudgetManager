@@ -93,6 +93,10 @@ namespace Budget_Manager
                 this.Visible = false;
                 reset();
             }
+            else
+            {
+                MessageBox.Show("Invalid entries. Please make sure you fill out each field and select the appropriate importance level. ", "Error");
+            }
         }
         public void buttonCancel_Click(object sender, EventArgs e)
         {
