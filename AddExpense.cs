@@ -109,6 +109,7 @@ namespace Budget_Manager
             bool badData = false;
             bool end = false;
             int uncheckedAmt = 0;
+            double testDouble = 0.0;
 
             while (!badData && !end)
             {
@@ -119,6 +120,20 @@ namespace Budget_Manager
                     {
                         System.Diagnostics.Debug.WriteLine("Found null text field. ");
                         badData = true;
+                    }
+                    else
+                    {
+                        if (i != 0)
+                        {
+                            try
+                            {
+                                testDouble = Double.Parse(textBoxes[i].Text);
+                            }
+                            catch (FormatException)
+                            {
+                                badData = true;
+                            }
+                        }
                     }
                 }
 

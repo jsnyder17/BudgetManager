@@ -45,7 +45,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(377, 30);
+            this.label1.Location = new System.Drawing.Point(418, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 15);
             this.label1.TabIndex = 0;
@@ -58,7 +58,7 @@
             this.listBox1.ItemHeight = 15;
             this.listBox1.Location = new System.Drawing.Point(283, 63);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(245, 319);
+            this.listBox1.Size = new System.Drawing.Size(324, 319);
             this.listBox1.TabIndex = 1;
             // 
             // label2
@@ -148,7 +148,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(566, 559);
+            this.ClientSize = new System.Drawing.Size(619, 559);
             this.Controls.Add(this.savingsCb);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
