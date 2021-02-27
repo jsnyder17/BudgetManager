@@ -10,8 +10,8 @@ namespace Budget_Manager
 {
     public partial class AddExpense : Form
     {
-        private TextBox[] textBoxes;
-        private RadioButton[] radioButtons;
+        private List<TextBox> textBoxes;
+        private List<RadioButton> radioButtons;
         private ExpenseManager em;
         private Form1 form1;
         private int index;
@@ -22,20 +22,20 @@ namespace Budget_Manager
             this.index = -1;
 
             //Initialize arrays
-            textBoxes = new TextBox[3];
-            radioButtons = new RadioButton[3];
+            textBoxes = new List<TextBox>();
+            radioButtons = new List<RadioButton>();
 
             InitializeComponent();
 
             // Add text boxes to array 
-            textBoxes[0] = nameTextBox;
-            textBoxes[1] = costTextBox;
-            textBoxes[2] = taxTextBox;
+            textBoxes.Add(nameTextBox);
+            textBoxes.Add(costTextBox);
+            textBoxes.Add(taxTextBox);
 
             // Add radio buttons to array
-            radioButtons[0] = highRb;
-            radioButtons[1] = medRb;
-            radioButtons[2] = lowRb;
+            radioButtons.Add(highRb);
+            radioButtons.Add(medRb);
+            radioButtons.Add(lowRb);
 
             buttonAdd.Click += new EventHandler(buttonAdd_Click);
             buttonCancel.Click += new EventHandler(buttonCancel_Click);
@@ -114,20 +114,20 @@ namespace Budget_Manager
             while (!badData && !end)
             {
                 // Check text boxes
-                for (int i = 0; i < 3; i++)
+                foreach (TextBox tb in textBoxes)
                 {
-                    if (textBoxes[i].Text.Equals(""))
+                    if (tb.Text.Equals(""))
                     {
                         System.Diagnostics.Debug.WriteLine("Found null text field. ");
                         badData = true;
                     }
                     else
                     {
-                        if (i != 0)
+                        if (textBoxes.IndexOf(tb) != 0)
                         {
                             try
                             {
-                                testDouble = Double.Parse(textBoxes[i].Text);
+                                testDouble = Double.Parse(tb.Text);
                             }
                             catch (FormatException)
                             {
@@ -140,9 +140,9 @@ namespace Budget_Manager
                 System.Diagnostics.Debug.WriteLine("Continuing checkBadData() ... ");
 
                 // Check radio buttons
-                for (int i = 0; i < 3; i++)
+                foreach (RadioButton rb in radioButtons)
                 {
-                    if (!radioButtons[i].Checked)
+                    if (!rb.Checked)
                     {
                         uncheckedAmt += 1;
                     }
@@ -158,15 +158,15 @@ namespace Budget_Manager
         }
         private void reset()    // Reset fields to blank values 
         {
-            for (int i = 0; i < 3; i++)
+            foreach (TextBox tb in textBoxes)
             {
-                textBoxes[i].Text = "";
+                tb.Text = "";
             }
-            for (int i = 0; i < 3; i++)
+            foreach(RadioButton rb in radioButtons)
             {
-                if (radioButtons[i].Checked)
+                if (rb.Checked)
                 {
-                    radioButtons[i].Checked = false;
+                    rb.Checked = false;
                 }
             }
         }
