@@ -47,6 +47,7 @@ namespace Budget_Manager
             button3.Click += new EventHandler(buttonRemove_Click);
             button4.Click += new EventHandler(buttonLoad_Click);
             button5.Click += new EventHandler(buttonSave_Click);
+            buttonQuit.Click += new EventHandler(buttonQuit_Click);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -143,6 +144,22 @@ namespace Budget_Manager
             {
                 save();
             }
+        }
+        private void buttonQuit_Click(object sender, EventArgs e)
+        {
+            int formAmt = Application.OpenForms.Count;
+
+            for (int i = formAmt - 1; i >= 0; i--)
+            {
+                if (Application.OpenForms[i] != this)
+                {
+                    Application.OpenForms[i].Close();
+                }
+            }
+
+            this.Close();
+
+            Application.Exit();
         }
         private void cb_Click(object sender, EventArgs e)
         {
@@ -264,18 +281,7 @@ namespace Budget_Manager
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            int index = Application.OpenForms.Count;
-            base.OnFormClosing(e);
-
-            for (int i = index - 1; i >= 0; i--)
-            {
-                if (Application.OpenForms[i] != this)
-                {
-                    Application.OpenForms[i].Dispose();
-                }
-            }
-
-            this.Dispose();
+            e.Cancel();
         }
     }
 }

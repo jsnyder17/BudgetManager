@@ -39,6 +39,7 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.savingsCb = new System.Windows.Forms.CheckBox();
+            this.buttonQuit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -144,11 +145,21 @@
             this.savingsCb.Text = "Apply savings";
             this.savingsCb.UseVisualStyleBackColor = true;
             // 
+            // buttonQuit
+            // 
+            this.buttonQuit.Location = new System.Drawing.Point(96, 524);
+            this.buttonQuit.Name = "buttonQuit";
+            this.buttonQuit.Size = new System.Drawing.Size(75, 23);
+            this.buttonQuit.TabIndex = 11;
+            this.buttonQuit.Text = "Quit";
+            this.buttonQuit.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(619, 559);
+            this.Controls.Add(this.buttonQuit);
             this.Controls.Add(this.savingsCb);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -181,6 +192,7 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.CheckBox savingsCb;
+        private System.Windows.Forms.Button buttonQuit;
     }
 }
 
