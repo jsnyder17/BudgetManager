@@ -14,7 +14,6 @@ namespace Budget_Manager
     public partial class Form1 : Form
     {
         private bool windowOpen;
-        private string fileName;
 
         private ExpenseManager em;
         private AddExpense addExpense;
@@ -26,7 +25,6 @@ namespace Budget_Manager
         public Form1(ExpenseManager em)
         {
             windowOpen = false;
-            fileName = "";
             
             this.em = em;
 
@@ -131,7 +129,12 @@ namespace Budget_Manager
         {
             if (!windowOpen)
             {
-                load();
+                DialogResult dialogResult = openFileDialog.ShowDialog();
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    loadFile(openFileDialog.FileName);
+                }
             }
         }
         private void buttonSave_Click(object sender, EventArgs e)
@@ -165,49 +168,43 @@ namespace Budget_Manager
                 MessageBox.Show("Budget saved successfully under '" + saveFileDialog.FileName + ".'", "Success");
             }
         }
-        private void load()
+
+        public void loadFile(string fileName)
         {
-            DialogResult dialogResult = openFileDialog.ShowDialog();
+            string[] lines;
+            int errorCount = 0;
 
-            if (dialogResult == DialogResult.OK)
+            System.Diagnostics.Debug.WriteLine("Selected '" + fileName + "'");
+
+            // Load data into expense manager
+            em.clearExpenses();
+
+            lines = File.ReadAllLines(fileName);
+
+            // Add all expenses read from file to em
+            for (int i = 0; i < lines.Length; i++)
             {
-                string[] lines;
-                int errorCount = 0;
-
-                fileName = openFileDialog.FileName;
-
-                System.Diagnostics.Debug.WriteLine("Selected '" + fileName + "'");
-
-                // Load data into expense manager
-                em.clearExpenses();
-
-                lines = File.ReadAllLines(fileName);
-
-                // Add all expenses read from file to em
-                for (int i = 0; i < lines.Length; i++)
+                // Check if line contains valid data
+                if (!checkLoadInvalid(lines[i]))
                 {
-                    // Check if line contains valid data
-                    if (!checkLoadInvalid(lines[i]))
-                    {
-                        Expense expense = new Expense(lines[i]);
-                        em.addExpense(expense);
-                    }
-                    else
-                    {
-                        errorCount += 1;
-                    }
-                }
-
-                update();
-
-                if (errorCount == 0)
-                {
-                    MessageBox.Show("Load successful! ", "Success");
+                    Expense expense = new Expense(lines[i]);
+                    em.addExpense(expense);
                 }
                 else
                 {
-                    MessageBox.Show("Loaded budget with the exception of (" + errorCount + ") expenses, which contained formatting errors. ");
+                    errorCount += 1;
                 }
+            }
+
+            update();
+
+            if (errorCount == 0)
+            {
+                MessageBox.Show("Load successful! ", "Success");
+            }
+            else
+            {
+                MessageBox.Show("Loaded budget with the exception of (" + errorCount + ") expenses, which contained formatting errors. ");
             }
         }
         private bool checkLoadInvalid(string data)
@@ -264,6 +261,21 @@ namespace Budget_Manager
             }
 
             return badData;
+        }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            int index = Application.OpenForms.Count;
+            base.OnFormClosing(e);
+
+            for (int i = index - 1; i >= 0; i--)
+            {
+                if (Application.OpenForms[i] != this)
+                {
+                    Application.OpenForms[i].Dispose();
+                }
+            }
+
+            this.Dispose();
         }
     }
 }
