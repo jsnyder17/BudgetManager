@@ -18,7 +18,7 @@ namespace Budget_Manager
 
         private ExpenseManager em;
         private AddExpense addExpense;
-
+        
         private OpenFileDialog openFileDialog;
         private SaveFileDialog saveFileDialog;
 
@@ -172,6 +172,7 @@ namespace Budget_Manager
             if (dialogResult == DialogResult.OK)
             {
                 string[] lines;
+                int errorCount = 0;
 
                 fileName = openFileDialog.FileName;
 
@@ -185,14 +186,84 @@ namespace Budget_Manager
                 // Add all expenses read from file to em
                 for (int i = 0; i < lines.Length; i++)
                 {
-                    Expense expense = new Expense(lines[i]);
-                    em.addExpense(expense);
+                    // Check if line contains valid data
+                    if (!checkLoadInvalid(lines[i]))
+                    {
+                        Expense expense = new Expense(lines[i]);
+                        em.addExpense(expense);
+                    }
+                    else
+                    {
+                        errorCount += 1;
+                    }
                 }
 
                 update();
 
-                MessageBox.Show("Load successful! ", "Success");
+                if (errorCount == 0)
+                {
+                    MessageBox.Show("Load successful! ", "Success");
+                }
+                else
+                {
+                    MessageBox.Show("Loaded budget with the exception of (" + errorCount + ") expenses, which contained formatting errors. ");
+                }
             }
+        }
+        private bool checkLoadInvalid(string data)
+        {
+            bool badData = false;
+            bool end = false;
+            double testDouble = 0.0;
+            int testInt = 0;
+
+            string[] dataSplit = data.Split(",");
+
+            System.Diagnostics.Debug.WriteLine(dataSplit.Length);
+
+            while (!badData && !end)
+            {
+                System.Diagnostics.Debug.WriteLine(badData);
+                // Check array length
+                if (dataSplit.Length != 4)
+                {
+                    badData = true;
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("=== LENGTH CHECK PASSED ===");
+                    // Check data formatting
+                    for (int i = 1; i < 4; i++)
+                    {
+                        try
+                        {
+                            if (i == 1 || i == 2)
+                            {
+                                testDouble = Double.Parse(dataSplit[i]);
+                            }
+                            else
+                            {
+                                testInt = int.Parse(dataSplit[i]);
+                                if (testInt <= 0 || testInt > 4)
+                                {
+                                    badData = true;
+                                }
+                            }
+                        }
+                        catch (FormatException e)
+                        {
+                            badData = true;
+                            System.Diagnostics.Debug.WriteLine("=== DATA CHECK FAILED FOR '" + dataSplit[i] + "' ===");
+                            //System.Diagnostics.Debug.WriteLine(badData);
+                        }
+                    }
+                    System.Diagnostics.Debug.WriteLine("=== DATA CHECK PASSED ===");
+                }
+
+                end = true;
+            }
+
+            return badData;
         }
     }
 }
