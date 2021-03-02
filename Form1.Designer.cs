@@ -40,6 +40,7 @@
             this.button5 = new System.Windows.Forms.Button();
             this.savingsCb = new System.Windows.Forms.CheckBox();
             this.buttonQuit = new System.Windows.Forms.Button();
+            this.darkThemeCb = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -55,6 +56,7 @@
             // 
             // listBox1
             // 
+            this.listBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 15;
             this.listBox1.Location = new System.Drawing.Point(283, 63);
@@ -154,11 +156,22 @@
             this.buttonQuit.Text = "Quit";
             this.buttonQuit.UseVisualStyleBackColor = true;
             // 
+            // darkThemeCb
+            // 
+            this.darkThemeCb.AutoSize = true;
+            this.darkThemeCb.Location = new System.Drawing.Point(524, 528);
+            this.darkThemeCb.Name = "darkThemeCb";
+            this.darkThemeCb.Size = new System.Drawing.Size(87, 19);
+            this.darkThemeCb.TabIndex = 12;
+            this.darkThemeCb.Text = "Dark theme";
+            this.darkThemeCb.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(619, 559);
+            this.Controls.Add(this.darkThemeCb);
             this.Controls.Add(this.buttonQuit);
             this.Controls.Add(this.savingsCb);
             this.Controls.Add(this.button5);
@@ -193,6 +206,7 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.CheckBox savingsCb;
         private System.Windows.Forms.Button buttonQuit;
+        private System.Windows.Forms.CheckBox darkThemeCb;
     }
 }
 
