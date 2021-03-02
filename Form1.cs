@@ -14,6 +14,12 @@ namespace Budget_Manager
     public partial class Form1 : Form
     {
         private bool windowOpen;
+        private bool darkTheme;
+
+        private Color backgroundColor;
+        private Color buttonColor;
+        private Color textColor;
+        private Color listColor;
 
         private ExpenseManager em;
         private AddExpense addExpense;
@@ -22,9 +28,14 @@ namespace Budget_Manager
         private SaveFileDialog saveFileDialog;
 
         private DollarFormat df;
+
+        private List<Label> labels;
+        private List<Button> buttons;
+        private List<CheckBox> checkBoxes;
         public Form1(ExpenseManager em)
         {
             windowOpen = false;
+            darkTheme = false;
             
             this.em = em;
 
@@ -40,14 +51,43 @@ namespace Budget_Manager
 
             InitializeComponent();
 
+            backgroundColor = this.BackColor;
+            buttonColor = button1.BackColor;
+            textColor = label1.ForeColor;
+            listColor = listBox1.BackColor;
+
+            labels = new List<Label>();
+            buttons = new List<Button>();
+            checkBoxes = new List<CheckBox>();
+
+            labels.Add(label1);
+            labels.Add(label2);
+            labels.Add(label3);
+            labels.Add(label4);
+
             button1.Click += new EventHandler(buttonAdd_Click);
+            buttons.Add(button1);
+
             savingsCb.Click += new EventHandler(cb_Click);
+            darkThemeCb.Click += new EventHandler(darkThemeCb_Click);
 
             button2.Click += new EventHandler(buttonEdit_Click);
+            buttons.Add(button2);
+
             button3.Click += new EventHandler(buttonRemove_Click);
+            buttons.Add(button3);
+
             button4.Click += new EventHandler(buttonLoad_Click);
+            buttons.Add(button4);
+
             button5.Click += new EventHandler(buttonSave_Click);
+            buttons.Add(button5);
+
             buttonQuit.Click += new EventHandler(buttonQuit_Click);
+            buttons.Add(buttonQuit);
+
+            checkBoxes.Add(savingsCb);
+            checkBoxes.Add(darkThemeCb);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -55,6 +95,22 @@ namespace Budget_Manager
 
         }
 
+        public bool getDarkTheme()
+        {
+            return darkTheme;
+        }
+        public Color getBackgroundColor()
+        {
+            return backgroundColor;
+        }
+        public Color getButtonColor()
+        {
+            return buttonColor;
+        }
+        public Color getTextColor()
+        {
+            return textColor;
+        }
         public void setWindowOpen(bool windowOpen)
         {
             this.windowOpen = windowOpen;
@@ -66,6 +122,52 @@ namespace Budget_Manager
 
         public void update()
         {
+            updateTheme(); // Update theme if changed
+            updateList(); // Update list with latest expenses
+            updateTotals(); // Update totals based off newly updated list 
+        }
+        private void updateTheme()
+        {
+            if (darkTheme)
+            {
+                backgroundColor = Color.FromArgb(37, 37, 37);
+                buttonColor = Color.FromArgb(57, 57, 57);
+                textColor = Color.White;
+                listColor = Color.Black;
+            }
+            else
+            {
+                backgroundColor = SystemColors.Control;
+                buttonColor = SystemColors.Control;
+                textColor = SystemColors.ControlText;
+                listColor = SystemColors.Window;
+            }
+
+            this.BackColor = backgroundColor;
+
+            // Labels
+            foreach (Label label in labels)
+            {
+                label.ForeColor = textColor;
+            }
+            // Buttons
+            foreach (Button button in buttons)
+            {
+                button.ForeColor = textColor;
+                button.BackColor = buttonColor;
+            }
+            // Check boxes
+            foreach (CheckBox checkBox in checkBoxes)
+            {
+                checkBox.ForeColor = textColor;
+            }
+            // List
+            listBox1.BackColor = listColor;
+            listBox1.ForeColor = textColor;
+        }
+        private void updateList()
+        {
+            // Update list contents 
             listBox1.Items.Clear();
 
             if (em.getExpenses().Count > 0)
@@ -75,7 +177,9 @@ namespace Budget_Manager
                     listBox1.Items.Add(em.listDisplay(i));
                 }
             }
-
+        }
+        private void updateTotals()
+        {
             // Update tax and savings totals displays
             label2.Text = ("Total Taxes: " + df.format((em.getTotalTax())));
             label3.Text = ("Total Possible Savings: " + df.format((em.getTotalSavings())));
@@ -94,6 +198,7 @@ namespace Budget_Manager
         {
             if (!windowOpen)
             {
+                addExpense.updateTheme();
                 addExpense.Visible = true;
                 windowOpen = true;
             }
@@ -105,6 +210,7 @@ namespace Budget_Manager
                 if (!windowOpen)
                 {
                     addExpense.editExpense(listBox1.SelectedIndex);
+                    addExpense.updateTheme();
                     addExpense.Visible = true;
                     windowOpen = true;
                 }
@@ -163,6 +269,21 @@ namespace Budget_Manager
         }
         private void cb_Click(object sender, EventArgs e)
         {
+            update();
+        }
+        private void darkThemeCb_Click(object sender, EventArgs e)
+        {
+            if (!darkTheme)
+            {
+                darkTheme = true;
+            }
+            else
+            {
+                darkTheme = false;
+            }
+
+            System.Diagnostics.Debug.WriteLine("Dark theme: " + darkTheme);
+
             update();
         }
         private void label1_Click(object sender, EventArgs e)

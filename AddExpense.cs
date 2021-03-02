@@ -12,6 +12,9 @@ namespace Budget_Manager
     {
         private List<TextBox> textBoxes;
         private List<RadioButton> radioButtons;
+        private List<Label> labels;
+        private List<Button> buttons;
+
         private ExpenseManager em;
         private Form1 form1;
         private int index;
@@ -24,6 +27,8 @@ namespace Budget_Manager
             //Initialize arrays
             textBoxes = new List<TextBox>();
             radioButtons = new List<RadioButton>();
+            labels = new List<Label>();
+            buttons = new List<Button>();
 
             InitializeComponent();
 
@@ -37,6 +42,15 @@ namespace Budget_Manager
             radioButtons.Add(medRb);
             radioButtons.Add(lowRb);
 
+            labels.Add(label1);
+            labels.Add(label2);
+            labels.Add(label3);
+            labels.Add(label4);
+            labels.Add(label5);
+
+            buttons.Add(buttonCancel);
+            buttons.Add(buttonAdd);
+
             buttonAdd.Click += new EventHandler(buttonAdd_Click);
             buttonCancel.Click += new EventHandler(buttonCancel_Click);
         }
@@ -47,7 +61,30 @@ namespace Budget_Manager
 
             updateFields();
         }
+        public void updateTheme()
+        {
+            System.Diagnostics.Debug.WriteLine("Dark theme: " + form1.getDarkTheme());
+            this.BackColor = form1.getBackgroundColor();
 
+            foreach (Label label in labels)
+            {
+                label.ForeColor = form1.getTextColor();
+            }
+            foreach (TextBox textBox in textBoxes)
+            {
+                textBox.BackColor = form1.getBackgroundColor();
+                textBox.ForeColor = form1.getTextColor();
+            }
+            foreach (Button button in buttons)
+            {
+                button.ForeColor = form1.getTextColor();
+                button.BackColor = form1.getButtonColor();
+            }
+            foreach (RadioButton radioButton in radioButtons)
+            {
+                radioButton.ForeColor = form1.getTextColor();
+            }
+        }
         private void AddExpense_Load(object sender, EventArgs e)
         {
 
