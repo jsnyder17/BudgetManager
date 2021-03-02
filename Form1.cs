@@ -281,7 +281,9 @@ namespace Budget_Manager
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            e.Cancel();
+            MessageBox.Show("Please use the 'Quit' button to close the application. ", "Notice");
+
+            e.Cancel = true;
         }
     }
 }
