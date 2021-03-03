@@ -86,6 +86,9 @@ namespace Budget_Manager
             button6.Click += new EventHandler(buttonMerge_Click);
             buttons.Add(button6);
 
+            button7.Click += new EventHandler(buttonClear_Click);
+            buttons.Add(button7);
+
             buttonQuit.Click += new EventHandler(buttonQuit_Click);
             buttons.Add(buttonQuit);
 
@@ -246,6 +249,11 @@ namespace Budget_Manager
                     loadFile(openFileDialog.FileName, false);
                 }
             }
+        }
+        private void buttonClear_Click(object sender, EventArgs e)
+        {
+            em.clearExpenses();
+            update();
         }
         private void buttonMerge_Click(object sender, EventArgs e)
         {

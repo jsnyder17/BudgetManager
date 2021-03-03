@@ -42,6 +42,7 @@
             this.buttonQuit = new System.Windows.Forms.Button();
             this.darkThemeCb = new System.Windows.Forms.CheckBox();
             this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -169,18 +170,28 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(54, 257);
+            this.button6.Location = new System.Drawing.Point(54, 330);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(165, 34);
             this.button6.TabIndex = 13;
             this.button6.Text = "Merge Budgets";
             this.button6.UseVisualStyleBackColor = true;
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(54, 259);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(165, 34);
+            this.button7.TabIndex = 14;
+            this.button7.Text = "Clear Expenses";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(619, 559);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.darkThemeCb);
             this.Controls.Add(this.buttonQuit);
@@ -219,6 +230,7 @@
         private System.Windows.Forms.Button buttonQuit;
         private System.Windows.Forms.CheckBox darkThemeCb;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
     }
 }
 
