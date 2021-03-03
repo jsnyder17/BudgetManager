@@ -45,7 +45,7 @@ namespace Budget_Manager
 
                 System.Diagnostics.Debug.WriteLine(openFileDialog.FileName);
 
-                form.loadFile(openFileDialog.FileName);
+                form.loadFile(openFileDialog.FileName, false);
             }
         }
         public void buttonQuit_Click(object sender, EventArgs e)
