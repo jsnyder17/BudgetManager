@@ -23,6 +23,23 @@ namespace Budget_Manager
 
             df = new DollarFormat();
         }
+        public ExpenseManager(ExpenseManager copy)
+        {
+            expenses = new List<Expense>();
+            totalPrice = 0.0;
+            totalTax = 0.0;
+            totalSavings = 0.0;
+            totalAll = 0.0;
+
+            df = new DollarFormat();
+
+            foreach(Expense e in copy.expenses)
+            {
+                expenses.Add(new Expense(e));
+            }
+
+            calcTotals();
+        }
         
         // Getters
         public List<Expense> getExpenses()
@@ -115,6 +132,18 @@ namespace Budget_Manager
             data = (expenses[index].getName() + "   " + df.format(expenses[index].getBasePrice()) + "   T: " + df.format(expenses[index].getTaxPrice()) + "   Total: " + df.format(expenses[index].getTotalPrice()));
 
             return data;
+        }
+
+        public bool Equals(ExpenseManager em)
+        {
+            bool equals = false;
+
+            if (expenses.Equals(em.getExpenses()))
+            {
+                equals = true;
+            }
+
+            return equals;
         }
     }
 }

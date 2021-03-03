@@ -47,6 +47,8 @@ namespace Budget_Manager
             this.basePrice = expense.basePrice;
             this.tax = expense.tax;
             this.importance = expense.importance;
+
+            calcTaxPrice();
         }
 
         // Getters
@@ -109,6 +111,18 @@ namespace Budget_Manager
         {
             System.Diagnostics.Debug.WriteLine("Calculating " + basePrice.ToString() + " * " + (tax / 100).ToString());
             taxPrice = basePrice * (tax / 100);
+        }
+
+        public bool Equals(Expense e)
+        {
+            bool equals = false;
+
+            if (this.name.Equals(e.name) && this.basePrice == e.basePrice && this.tax == e.tax && this.taxPrice == e.taxPrice)
+            {
+                equals = true;
+            }
+
+            return equals;
         }
     }
 }
