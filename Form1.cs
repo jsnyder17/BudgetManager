@@ -15,13 +15,16 @@ namespace Budget_Manager
     {
         private bool windowOpen;
         private bool darkTheme;
+        private bool madeChanges;
 
         private Color backgroundColor;
         private Color buttonColor;
         private Color textColor;
         private Color listColor;
 
+        private ExpenseManager origEm;
         private ExpenseManager em;
+
         private AddExpense addExpense;
         
         private OpenFileDialog openFileDialog;
@@ -36,7 +39,9 @@ namespace Budget_Manager
         {
             windowOpen = false;
             darkTheme = false;
-            
+            madeChanges = false;
+
+            this.origEm = new ExpenseManager(em);
             this.em = em;
 
             addExpense = new AddExpense(this, em);
@@ -124,6 +129,8 @@ namespace Budget_Manager
         public void setExpenseManager(ExpenseManager em)
         {
             this.em = em;
+
+            checkChanges();
         }
 
         public void update()
@@ -206,7 +213,8 @@ namespace Budget_Manager
             {
                 addExpense.updateTheme();
                 addExpense.Visible = true;
-                windowOpen = true;
+                
+                switchWindowOpen();
             }
         }
         private void buttonEdit_Click(object sender, EventArgs e)
@@ -218,7 +226,8 @@ namespace Budget_Manager
                     addExpense.editExpense(listBox1.SelectedIndex);
                     addExpense.updateTheme();
                     addExpense.Visible = true;
-                    windowOpen = true;
+
+                    switchWindowOpen();
                 }
             }
             else
@@ -228,54 +237,154 @@ namespace Budget_Manager
         }
         private void buttonRemove_Click(object sender, EventArgs e)
         {
-            if (listBox1.SelectedIndex != -1)
+            if (!windowOpen)
             {
-                em.removeExpense(listBox1.SelectedIndex);
-                update();
-            }
-            else
-            {
-                MessageBox.Show("You must select an expense to delete. ", "Error");
+                switchWindowOpen();
+
+                if (listBox1.SelectedIndex != -1)
+                {
+                    DialogResult confirmResult = promptConfirm("Are you sure you want to remove '" + em.getExpenses()[listBox1.SelectedIndex].getName() + "' from the list? ");
+
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        em.removeExpense(listBox1.SelectedIndex);
+                        update();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("You must select an expense to delete. ", "Error");
+                }
+
+                switchWindowOpen();
             }
         }
         private void buttonLoad_Click(object sender, EventArgs e)
         {
             if (!windowOpen)
             {
-                DialogResult dialogResult = openFileDialog.ShowDialog();
+                switchWindowOpen();
 
-                if (dialogResult == DialogResult.OK)
+                if (madeChanges)
                 {
-                    loadFile(openFileDialog.FileName, false);
+                    DialogResult savePromptResult = savePrompt("You have made changes. All changes will be deleted if not saved. ");
+
+                    if (savePromptResult != DialogResult.Cancel)
+                    {
+                        if (savePromptResult == DialogResult.Yes)
+                        {
+                            save();
+                        }
+
+                        // User selects file to load 
+                        DialogResult dialogResult = openFileDialog.ShowDialog();
+
+                        if (dialogResult == DialogResult.OK)
+                        {
+                            loadFile(openFileDialog.FileName, false);
+                        }
+                    }
                 }
+                else
+                {
+                    // User selects file to load 
+                    DialogResult dialogResult = openFileDialog.ShowDialog();
+
+                    if (dialogResult == DialogResult.OK)
+                    {
+                        loadFile(openFileDialog.FileName, false);
+                    }
+                }
+
+                switchWindowOpen();
             }
         }
         private void buttonClear_Click(object sender, EventArgs e)
         {
-            em.clearExpenses();
-            update();
+            if (!windowOpen)
+            {
+                switchWindowOpen();
+
+                DialogResult savePromptResult = savePrompt("This will remove all currently listed expenses. ");
+
+                if (savePromptResult != DialogResult.Cancel)
+                {
+                    if (savePromptResult == DialogResult.Yes)
+                    {
+                        save();
+                    }
+
+                    em.clearExpenses();
+
+                    update();
+                }
+
+                switchWindowOpen();
+            }
         }
         private void buttonMerge_Click(object sender, EventArgs e)
         {
             if (!windowOpen)
             {
+                switchWindowOpen();
+
                 DialogResult dialogResult = openFileDialog.ShowDialog();
 
                 if (dialogResult == DialogResult.OK)
                 {
                     loadFile(openFileDialog.FileName, true);
                 }
+
+                switchWindowOpen();
             }
         }
         private void buttonSave_Click(object sender, EventArgs e)
         {
             if (!windowOpen)
             {
+                switchWindowOpen();
+
                 save();
+
+                switchWindowOpen();
             }
         }
         private void buttonQuit_Click(object sender, EventArgs e)
         {
+            if (!windowOpen)
+            {
+                switchWindowOpen();
+
+                if (madeChanges)
+                {
+                    DialogResult savePromptResult = savePrompt("You have made changes. ");
+
+                    if (savePromptResult != DialogResult.Cancel)
+                    {
+                        if (savePromptResult == DialogResult.Yes)
+                        {
+                            save();
+                        }
+
+                        closeApplication();
+                    }
+                }
+                else
+                {
+                    DialogResult confirmResult = promptConfirm("Are you sure you want to quit? ");
+
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        closeApplication();
+                    }
+                }
+
+                switchWindowOpen();
+            }
+        }
+        private void closeApplication()
+        {
+            // Close application 
             int formAmt = Application.OpenForms.Count;
 
             for (int i = formAmt - 1; i >= 0; i--)
@@ -327,6 +436,8 @@ namespace Budget_Manager
                 System.Diagnostics.Debug.WriteLine("Saved file successfully! ");
 
                 MessageBox.Show("Budget saved successfully under '" + saveFileDialog.FileName + ".'", "Success");
+
+                madeChanges = false;
             }
         }
 
@@ -359,6 +470,10 @@ namespace Budget_Manager
                     errorCount += 1;
                 }
             }
+
+            origEm = new ExpenseManager(em);
+
+            madeChanges = false;
 
             update();
 
@@ -425,6 +540,38 @@ namespace Budget_Manager
             }
 
             return badData;
+        }
+        private DialogResult savePrompt(string reasonText)
+        {
+            DialogResult dialogResult = promptConfirm(reasonText + "Do you wish to save before performing this action? ");
+
+            return dialogResult;
+        }
+        private void checkChanges()
+        {
+            if (!origEm.Equals(em))
+            {
+                madeChanges = true;
+            }
+        }
+        public void switchWindowOpen()
+        {
+            if (!windowOpen)
+            {
+                windowOpen = true;
+            }
+            else
+            {
+                windowOpen = false;
+            }
+        }
+        private DialogResult promptConfirm(string promptText)
+        {
+            bool confirm = false;
+
+            DialogResult dialogResult = MessageBox.Show(promptText, "Confirm", MessageBoxButtons.YesNo);
+
+            return dialogResult;
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
