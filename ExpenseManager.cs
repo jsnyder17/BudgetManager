@@ -71,6 +71,8 @@ namespace Budget_Manager
         public void clearExpenses()
         {
             expenses.Clear();
+
+            calcTotals();
         }
 
         public string toString()
