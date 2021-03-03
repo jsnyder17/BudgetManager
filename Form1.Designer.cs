@@ -41,6 +41,7 @@
             this.savingsCb = new System.Windows.Forms.CheckBox();
             this.buttonQuit = new System.Windows.Forms.Button();
             this.darkThemeCb = new System.Windows.Forms.CheckBox();
+            this.button6 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -103,7 +104,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(54, 153);
+            this.button2.Location = new System.Drawing.Point(54, 144);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(165, 34);
             this.button2.TabIndex = 6;
@@ -112,7 +113,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(54, 227);
+            this.button3.Location = new System.Drawing.Point(54, 202);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(165, 34);
             this.button3.TabIndex = 7;
@@ -166,11 +167,21 @@
             this.darkThemeCb.Text = "Dark theme";
             this.darkThemeCb.UseVisualStyleBackColor = true;
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(54, 257);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(165, 34);
+            this.button6.TabIndex = 13;
+            this.button6.Text = "Merge Budgets";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(619, 559);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.darkThemeCb);
             this.Controls.Add(this.buttonQuit);
             this.Controls.Add(this.savingsCb);
@@ -207,6 +218,7 @@
         private System.Windows.Forms.CheckBox savingsCb;
         private System.Windows.Forms.Button buttonQuit;
         private System.Windows.Forms.CheckBox darkThemeCb;
+        private System.Windows.Forms.Button button6;
     }
 }
 

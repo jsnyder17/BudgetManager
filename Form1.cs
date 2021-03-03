@@ -83,6 +83,9 @@ namespace Budget_Manager
             button5.Click += new EventHandler(buttonSave_Click);
             buttons.Add(button5);
 
+            button6.Click += new EventHandler(buttonMerge_Click);
+            buttons.Add(button6);
+
             buttonQuit.Click += new EventHandler(buttonQuit_Click);
             buttons.Add(buttonQuit);
 
@@ -240,7 +243,19 @@ namespace Budget_Manager
 
                 if (dialogResult == DialogResult.OK)
                 {
-                    loadFile(openFileDialog.FileName);
+                    loadFile(openFileDialog.FileName, false);
+                }
+            }
+        }
+        private void buttonMerge_Click(object sender, EventArgs e)
+        {
+            if (!windowOpen)
+            {
+                DialogResult dialogResult = openFileDialog.ShowDialog();
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    loadFile(openFileDialog.FileName, true);
                 }
             }
         }
@@ -307,7 +322,7 @@ namespace Budget_Manager
             }
         }
 
-        public void loadFile(string fileName)
+        public void loadFile(string fileName, bool combine)
         {
             string[] lines;
             int errorCount = 0;
@@ -315,7 +330,10 @@ namespace Budget_Manager
             System.Diagnostics.Debug.WriteLine("Selected '" + fileName + "'");
 
             // Load data into expense manager
-            em.clearExpenses();
+            if (!combine)
+            {
+                em.clearExpenses();
+            }
 
             lines = File.ReadAllLines(fileName);
 
