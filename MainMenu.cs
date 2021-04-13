@@ -52,5 +52,10 @@ namespace Budget_Manager
         {
             Application.Exit();
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
