@@ -80,7 +80,7 @@ namespace Budget_Manager
         {
             expenses[index].setName(expense.getName());
             expenses[index].setBasePrice(expense.getBasePrice());
-            expenses[index].setTax(expense.getTax());
+            expenses[index].setState(expense.getState());
             expenses[index].setImportance(expense.getImportance());
 
             calcTotals();
@@ -129,7 +129,7 @@ namespace Budget_Manager
         {
             string data = "";
 
-            data = (expenses[index].getName() + "   " + df.format(expenses[index].getBasePrice()) + "   T: " + df.format(expenses[index].getTaxPrice()) + "   Total: " + df.format(expenses[index].getTotalPrice()));
+            data = expenses[index].getName() + "   " + df.format(expenses[index].getBasePrice()) + "   T: (" + expenses[index].getState().getTaxRate() * 100 + "%) " + df.format(expenses[index].getTaxPrice()) + "   Total: " + df.format(expenses[index].getTotalPrice());
 
             return data;
         }

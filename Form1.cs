@@ -501,7 +501,7 @@ namespace Budget_Manager
             {
                 System.Diagnostics.Debug.WriteLine(badData);
                 // Check array length
-                if (dataSplit.Length != 4)
+                if (dataSplit.Length != 5)
                 {
                     badData = true;
                 }
@@ -513,13 +513,14 @@ namespace Budget_Manager
                     {
                         try
                         {
-                            if (i == 1 || i == 2)
+                            if (i == 1)
                             {
                                 testDouble = Double.Parse(dataSplit[i]);
                             }
-                            else
+                            else if (i == 4)
                             {
                                 testInt = int.Parse(dataSplit[i]);
+
                                 if (testInt <= 0 || testInt > 4)
                                 {
                                     badData = true;

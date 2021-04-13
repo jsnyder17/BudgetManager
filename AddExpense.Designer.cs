@@ -32,16 +32,17 @@ namespace Budget_Manager
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.costTextBox = new System.Windows.Forms.TextBox();
-            this.taxTextBox = new System.Windows.Forms.TextBox();
             this.highRb = new System.Windows.Forms.RadioButton();
             this.medRb = new System.Windows.Forms.RadioButton();
             this.lowRb = new System.Windows.Forms.RadioButton();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.taxCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -71,19 +72,10 @@ namespace Budget_Manager
             this.label3.TabIndex = 2;
             this.label3.Text = "Cost ($):";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 122);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 15);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Tax (%):";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 157);
+            this.label5.Location = new System.Drawing.Point(12, 182);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 15);
             this.label5.TabIndex = 4;
@@ -103,17 +95,10 @@ namespace Budget_Manager
             this.costTextBox.Size = new System.Drawing.Size(165, 23);
             this.costTextBox.TabIndex = 6;
             // 
-            // taxTextBox
-            // 
-            this.taxTextBox.Location = new System.Drawing.Point(96, 119);
-            this.taxTextBox.Name = "taxTextBox";
-            this.taxTextBox.Size = new System.Drawing.Size(165, 23);
-            this.taxTextBox.TabIndex = 7;
-            // 
             // highRb
             // 
             this.highRb.AutoSize = true;
-            this.highRb.Location = new System.Drawing.Point(96, 155);
+            this.highRb.Location = new System.Drawing.Point(96, 180);
             this.highRb.Name = "highRb";
             this.highRb.Size = new System.Drawing.Size(51, 19);
             this.highRb.TabIndex = 8;
@@ -124,7 +109,7 @@ namespace Budget_Manager
             // medRb
             // 
             this.medRb.AutoSize = true;
-            this.medRb.Location = new System.Drawing.Point(168, 155);
+            this.medRb.Location = new System.Drawing.Point(168, 180);
             this.medRb.Name = "medRb";
             this.medRb.Size = new System.Drawing.Size(49, 19);
             this.medRb.TabIndex = 9;
@@ -135,7 +120,7 @@ namespace Budget_Manager
             // lowRb
             // 
             this.lowRb.AutoSize = true;
-            this.lowRb.Location = new System.Drawing.Point(239, 155);
+            this.lowRb.Location = new System.Drawing.Point(239, 180);
             this.lowRb.Name = "lowRb";
             this.lowRb.Size = new System.Drawing.Size(47, 19);
             this.lowRb.TabIndex = 10;
@@ -161,26 +146,57 @@ namespace Budget_Manager
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(154, 138);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(59, 15);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Tax State: ";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(219, 135);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(51, 23);
+            this.comboBox1.TabIndex = 14;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // taxCheckBox
+            // 
+            this.taxCheckBox.AutoSize = true;
+            this.taxCheckBox.Location = new System.Drawing.Point(71, 137);
+            this.taxCheckBox.Name = "taxCheckBox";
+            this.taxCheckBox.Size = new System.Drawing.Size(65, 19);
+            this.taxCheckBox.TabIndex = 15;
+            this.taxCheckBox.Text = "Taxable";
+            this.taxCheckBox.UseVisualStyleBackColor = true;
+            // 
             // AddExpense
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(371, 259);
+            this.Controls.Add(this.taxCheckBox);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonAdd);
             this.Controls.Add(this.lowRb);
             this.Controls.Add(this.medRb);
             this.Controls.Add(this.highRb);
-            this.Controls.Add(this.taxTextBox);
             this.Controls.Add(this.costTextBox);
             this.Controls.Add(this.nameTextBox);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "AddExpense";
             this.Text = "AddExpense";
+            this.Load += new System.EventHandler(this.AddExpense_Load_1);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,15 +207,16 @@ namespace Budget_Manager
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.TextBox costTextBox;
-        private System.Windows.Forms.TextBox taxTextBox;
         private System.Windows.Forms.RadioButton highRb;
         private System.Windows.Forms.RadioButton medRb;
         private System.Windows.Forms.RadioButton lowRb;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.CheckBox taxCheckBox;
     }
 }
